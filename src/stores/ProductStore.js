@@ -57,6 +57,10 @@ class ProductStore {
     @computed get matchPhrase() {
         return this.products.filter((product) => product.name.includes(this.phrase));
     }
+
+    @computed get soldProductsAmount() {
+        return this.products.filter((product) => product.isSold).length;
+    }
 }
 
 export default new ProductStore();

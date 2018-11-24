@@ -5,19 +5,18 @@ const Product = (product) => {
     const { name, isSold, onBuyClick } = product;
 
     const handleClick = () => {
-        onBuyClick(product);
+        onBuyClick({
+            ...product,
+            isSold: true
+        });
     };
 
     return <div>
-        <span style={ {
-            textDecoration: isSold
-                ? 'line-through'
-                : 'none'
-        } }>{ name }</span>
+        <span>{ name }</span>
 
-        <button onClick={ handleClick }>
-            Kup
-        </button>
+        { isSold
+            ? ''
+            : <button onClick={ handleClick }>Kup</button> }
     </div>;
 };
 

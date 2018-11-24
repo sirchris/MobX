@@ -3,15 +3,18 @@ import Product from './Product';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+@inject('basketStore')
 @inject('productStore')
 @observer
 class ProductList extends React.Component {
     handleBuyClick = (product) => {
+        this.props.basketStore.addProduct(product);
         this.props.productStore.buyProduct(product.id);
     }
 
     render() {
-        const { filterProducts, matchPhrase, promotedProducts } = this.props.productStore;
+        const { products } = this.props.basketStore,
+            { filterProducts, matchPhrase, promotedProducts, soldProductsAmount } = this.props.productStore;
 
         const listItem = (product) => <li key={ product.id }>
             <Product id={ product.id } name={ product.name } isSold={ product.isSold } onBuyClick={ this.handleBuyClick } />
@@ -33,11 +36,18 @@ class ProductList extends React.Component {
             <ul>
                 { promotedProducts.map((product) => listItem(product)) }
             </ul>
+
+            <h2>Koszyk ({ soldProductsAmount })</h2>
+
+            <ul>
+                { products.map((product) => listItem(product)) }
+            </ul>
         </div>;
     }
 }
 
 ProductList.propTypes = {
+    basketStore: PropTypes.array,
     productStore: PropTypes.array
 };
 
