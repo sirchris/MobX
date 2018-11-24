@@ -1,4 +1,4 @@
-import { action, observable } from 'mobx';
+import { action, computed, observable } from 'mobx';
 
 class ProductStore {
     @observable products = [
@@ -24,6 +24,8 @@ class ProductStore {
 
     @observable order = 'asc'
 
+    @observable phrase = ''
+
     @action sortByName = () => {
         this.products = this.order === 'asc'
             ? this.products.sort((a, b) => a.name.localeCompare(b.name))
@@ -42,6 +44,18 @@ class ProductStore {
             }
             : product
         ));
+    }
+
+    @action filterProducts = (event) => {
+        this.phrase = event.target.value;
+    }
+
+    @computed get promotedProducts() {
+        return this.products.filter((product) => product.promoted);
+    }
+
+    @computed get matchPhrase() {
+        return this.products.filter((product) => product.name.includes(this.phrase));
     }
 }
 
