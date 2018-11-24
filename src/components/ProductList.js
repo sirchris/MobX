@@ -25,11 +25,25 @@ class ProductList extends React.Component {
         ]
     }
 
+    handleBuyClick = (id) => {
+        this.setState((previousState) => {
+            const products = previousState.products.map((product) => (product.id === id
+                ? {
+                    ...product,
+                    isSold: true
+                }
+                : product
+            ));
+
+            return { products };
+        });
+    }
+
     isPromoted = (product) => product.promoted;
 
     render() {
         const listItem = (product) => <li key={ product.id }>
-            <Product name={ product.name } />
+            <Product id={ product.id } name={ product.name } isSold={ product.isSold } onBuyClick={ this.handleBuyClick } />
         </li>;
 
         return <div>
