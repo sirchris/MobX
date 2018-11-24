@@ -3,6 +3,7 @@ import React from 'react';
 
 class ProductList extends React.Component {
     state = {
+        order: 'asc',
         phrase: '',
         products: [
             {
@@ -48,6 +49,19 @@ class ProductList extends React.Component {
 
     matchPhrase = (item) => item.name.includes(this.state.phrase);
 
+    sortByName = () => {
+        this.setState(() => (this.state.order === 'asc'
+            ? {
+                order: 'desc',
+                products: this.state.products.sort((a, b) => a.name.localeCompare(b.name))
+            }
+            : {
+                order: 'asc',
+                products: this.state.products.reverse((a, b) => a.name.localeCompare(b.name))
+            }
+        ));
+    }
+
     render() {
         const listItem = (product) => <li key={ product.id }>
             <Product id={ product.id } name={ product.name } isSold={ product.isSold } onBuyClick={ this.handleBuyClick } />
@@ -55,6 +69,10 @@ class ProductList extends React.Component {
 
         return <div>
             <input type="text" onChange={ this.filterProducts } />
+
+            <button onClick={ this.sortByName }>Sortuj wg nazwy { this.state.order === 'asc'
+                ? 'rosnąco'
+                : 'malejąco' }</button>
 
             <ul>
                 { this.state.products.filter(this.matchPhrase).map((product) => listItem(product)) }
