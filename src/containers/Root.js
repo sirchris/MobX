@@ -1,7 +1,8 @@
+import ProductList from './../components/ProductList';
 import React from 'react';
 
 const Root = () => <div>
-    Hello MobX!
+    <ProductList />
 </div>;
 
 export default Root;
