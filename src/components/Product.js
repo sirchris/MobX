@@ -1,10 +1,11 @@
 import React from 'react';
+import { observer } from 'mobx-react';
 
 const Product = (product) => {
-    const { id, name, isSold, onBuyClick } = product;
+    const { name, isSold, onBuyClick } = product;
 
     const handleClick = () => {
-        onBuyClick(id);
+        onBuyClick(product);
     };
 
     return <div>
@@ -20,4 +21,4 @@ const Product = (product) => {
     </div>;
 };
 
-export default Product;
+export default observer(Product);
