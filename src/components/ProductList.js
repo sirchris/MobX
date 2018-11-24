@@ -1,8 +1,9 @@
+import { inject, observer } from 'mobx-react';
 import Product from './Product';
+import PropTypes from 'prop-types';
 import React from 'react';
-import { observer } from 'mobx-react';
-import productStore from './../stores/ProductStore';
 
+@inject('productStore')
 @observer
 class ProductList extends React.Component {
     state = {
@@ -10,7 +11,7 @@ class ProductList extends React.Component {
     }
 
     handleBuyClick = (product) => {
-        productStore.buyProduct(product.id);
+        this.props.productStore.buyProduct(product.id);
     }
 
     isPromoted = (product) => product.promoted;
@@ -29,21 +30,25 @@ class ProductList extends React.Component {
         return <div>
             <input type="text" onChange={ this.filterProducts } />
 
-            <button onClick={ productStore.sortByName }>Sortuj wg nazwy { productStore.order === 'asc'
+            <button onClick={ this.props.productStore.sortByName }>Sortuj wg nazwy { this.props.productStore.order === 'asc'
                 ? 'rosnąco'
                 : 'malejąco' }</button>
 
             <ul>
-                { productStore.products.filter(this.matchPhrase).map((product) => listItem(product)) }
+                { this.props.productStore.products.filter(this.matchPhrase).map((product) => listItem(product)) }
             </ul>
 
             <h2>Promowane</h2>
 
             <ul>
-                { productStore.products.filter(this.isPromoted).map((product) => listItem(product)) }
+                { this.props.productStore.products.filter(this.isPromoted).map((product) => listItem(product)) }
             </ul>
         </div>;
     }
 }
+
+ProductList.propTypes = {
+    productStore: PropTypes.array
+};
 
 export default ProductList;
